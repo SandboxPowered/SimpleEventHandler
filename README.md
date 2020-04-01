@@ -1,4 +1,4 @@
-#Simple Event Handler
+**Simple Event Handler**:
 A system inspired by the C# event system.
 
 **Usage:**
