@@ -1,5 +1,7 @@
-#Simple Event Handler
+**Simple Event Handler**:
 A system inspired by the C# event system.
+
+Feel free to use or modify this anywhere.
 
 **Usage:**
 You just need an instance of EventHandler<S, A>, with S being the type of sender and A being the type of arguments(which extends EventArgs, so you could include data to your event).
