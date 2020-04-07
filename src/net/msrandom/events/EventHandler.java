@@ -4,13 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-public class EventHandler<SENDER, ARGS extends EventArgs> implements BiConsumer<SENDER, ARGS> {
+public class EventHandler<SENDER, ARGS extends EventArgs> implements IEventHandler<SENDER, ARGS> {
     private Set<BiConsumer<SENDER, ARGS>> subscribers = new HashSet<>();
 
+    @Override
     public void subscribe(BiConsumer<SENDER, ARGS> subscriber) {
         subscribers.add(subscriber);
     }
 
+    @Override
     public void unsubscribe(BiConsumer<SENDER, ARGS> subscriber) {
         subscribers.remove(subscriber);
     }
