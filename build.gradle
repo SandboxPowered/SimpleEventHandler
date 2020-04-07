@@ -1,0 +1,33 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+archivesBaseName = 'eventhandler'
+group 'org.sandboxpowered'
+version = "1.0.${System.getenv("TRAVIS_BUILD_NUMBER") ? (System.getenv("TRAVIS_BUILD_NUMBER")) : "0"}"
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        if (project == rootProject && System.getenv("mvn_username")) {
+            maven {
+                name = "Maven"
+                url = uri("sftp://maven.sandboxpowered.org:22/sbxmvn/")
+                credentials {
+                    username = System.getenv("mvn_username")
+                    password = System.getenv("mvn_password")
+                }
+            }
+        } else {
+            mavenLocal()
+        }
+    }
+}
