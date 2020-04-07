@@ -10,4 +10,6 @@ public interface IEventHandler<SENDER, ARGS extends EventArgs> extends BiConsume
 
     @Override
     void accept(SENDER sender, ARGS args);
+
+    void clear();
 }

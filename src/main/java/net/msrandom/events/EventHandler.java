@@ -23,4 +23,9 @@ public class EventHandler<SENDER, ARGS extends EventArgs> implements IEventHandl
             subscriber.accept(sender, args);
         }
     }
+
+    @Override
+    public void clear() {
+        subscribers.clear();
+    }
 }

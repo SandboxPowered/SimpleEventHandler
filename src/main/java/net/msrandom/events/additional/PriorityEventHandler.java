@@ -42,4 +42,10 @@ public class PriorityEventHandler<SENDER, ARGS extends CancellableEventArgs> imp
             }
         }
     }
+
+    @Override
+    public void clear() {
+        subscribers.clear();
+        reversePriority.clear();
+    }
 }
