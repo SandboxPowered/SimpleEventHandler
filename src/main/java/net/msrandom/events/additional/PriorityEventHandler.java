@@ -33,10 +33,16 @@ public class PriorityEventHandler<SENDER, ARGS extends CancellableEventArgs> imp
 
     @Override
     public void accept(SENDER sender, ARGS args) {
+        boolean canceled = false;
         for (int i = Priority.values().length - 1; i >= 0; --i) {
+            if (canceled) break;
             Priority priority = Priority.values()[i];
             if (subscribers.containsKey(priority)) {
                 for (BiConsumer<SENDER, ARGS> subscriber : subscribers.get(priority)) {
+                    if (args.isCanceled()) {
+                        canceled = true;
+                        break;
+                    }
                     subscriber.accept(sender, args);
                 }
             }
