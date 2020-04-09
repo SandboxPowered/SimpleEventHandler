@@ -1,4 +1,4 @@
-package org.sandboxpowered.api.events.core;
+package org.sandboxpowered.eventhandler.core;
 
 import java.util.HashSet;
 import java.util.Set;

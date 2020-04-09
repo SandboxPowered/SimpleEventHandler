@@ -1,6 +1,6 @@
-package org.sandboxpowered.api.events;
+package org.sandboxpowered.eventhandler;
 
-import org.sandboxpowered.api.events.core.EventArgs;
+import org.sandboxpowered.eventhandler.core.EventArgs;
 
 public class CancellableEventArgs extends EventArgs {
     private boolean isCanceled;

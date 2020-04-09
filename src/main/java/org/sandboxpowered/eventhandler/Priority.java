@@ -1,4 +1,4 @@
-package org.sandboxpowered.api.events;
+package org.sandboxpowered.eventhandler;
 
 public enum Priority {
     LOWEST,

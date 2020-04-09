@@ -1,6 +1,6 @@
-package org.sandboxpowered.api.events;
+package org.sandboxpowered.eventhandler;
 
-import org.sandboxpowered.api.events.core.IEventHandler;
+import org.sandboxpowered.eventhandler.core.IEventHandler;
 
 import java.util.*;
 import java.util.function.BiConsumer;
