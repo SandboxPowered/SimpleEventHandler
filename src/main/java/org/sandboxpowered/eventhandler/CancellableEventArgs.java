@@ -2,14 +2,7 @@ package org.sandboxpowered.eventhandler;
 
 import org.sandboxpowered.eventhandler.core.EventArgs;
 
-public class CancellableEventArgs extends EventArgs {
-    private boolean isCanceled;
-
-    public void setCanceled() {
-        isCanceled = true;
-    }
-
-    public boolean isCanceled() {
-        return isCanceled;
-    }
+public interface CancellableEventArgs extends EventArgs {
+    void setCanceled();
+    boolean isCanceled();
 }

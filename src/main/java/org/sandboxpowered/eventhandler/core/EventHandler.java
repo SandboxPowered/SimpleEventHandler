@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-public class EventHandler<S, A extends EventArgs> implements IEventHandler<S, A> {
+public class EventHandler<S, A extends EventArgs> implements EventHandlerBase<S, A> {
     private Set<BiConsumer<S, A>> subscribers = new HashSet<>();
 
     @Override
