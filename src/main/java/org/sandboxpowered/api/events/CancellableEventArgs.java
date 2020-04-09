@@ -1,6 +1,6 @@
-package net.msrandom.events.additional;
+package org.sandboxpowered.api.events;
 
-import net.msrandom.events.EventArgs;
+import org.sandboxpowered.api.events.core.EventArgs;
 
 public class CancellableEventArgs extends EventArgs {
     private boolean isCanceled;
