@@ -13,11 +13,12 @@ version = "1.0.${System.getenv("TRAVIS_BUILD_NUMBER") ? (System.getenv("TRAVIS_B
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            artifactId = 'eventhandler'
             artifact jar
         }
     }
     repositories {
-        if (project == rootProject && System.getenv("mvn_username")) {
+        if (System.getenv("mvn_username")) {
             maven {
                 name = "Maven"
                 url = uri("sftp://maven.sandboxpowered.org:22/sbxmvn/")
@@ -26,8 +27,6 @@ publishing {
                     password = System.getenv("mvn_password")
                 }
             }
-        } else {
-            mavenLocal()
         }
     }
 }
