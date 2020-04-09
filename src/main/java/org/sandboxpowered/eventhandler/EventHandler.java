@@ -1,4 +1,7 @@
-package org.sandboxpowered.eventhandler.core;
+package org.sandboxpowered.eventhandler;
+
+import org.sandboxpowered.eventhandler.core.EventArgs;
+import org.sandboxpowered.eventhandler.core.EventHandlerBase;
 
 import java.util.HashSet;
 import java.util.Set;
