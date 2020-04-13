@@ -1,4 +1,6 @@
-package org.sandboxpowered.eventhandler.core;
+package org.sandboxpowered.eventhandler.priority;
+
+import org.sandboxpowered.eventhandler.core.EventHandlerBase;
 
 import java.util.function.BiConsumer;
 

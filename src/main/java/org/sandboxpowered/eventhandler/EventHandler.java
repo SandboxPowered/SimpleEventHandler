@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class EventHandler<S, A extends EventArgs> implements EventHandlerBase<S, A> {
-    private Set<BiConsumer<S, A>> subscribers = new HashSet<>();
+    private final Set<BiConsumer<S, A>> subscribers = new HashSet<>();
 
     @Override
     public void subscribe(BiConsumer<S, A> subscriber) {

@@ -1,15 +1,15 @@
 package org.sandboxpowered.eventhandler;
 
-import org.sandboxpowered.eventhandler.core.Cancellable;
-import org.sandboxpowered.eventhandler.core.Priority;
-import org.sandboxpowered.eventhandler.core.PriorityHandler;
+import org.sandboxpowered.eventhandler.priority.Cancellable;
+import org.sandboxpowered.eventhandler.priority.Priority;
+import org.sandboxpowered.eventhandler.priority.PriorityHandler;
 
 import java.util.*;
 import java.util.function.BiConsumer;
 
 public class PriorityEventHandler<S, A extends Cancellable> implements PriorityHandler<S, A> {
-    private Map<Priority, Set<BiConsumer<S, A>>> subscribers = new HashMap<>();
-    private Map<BiConsumer<S, A>, Priority> reversePriority = new HashMap<>();
+    private final Map<Priority, Set<BiConsumer<S, A>>> subscribers = new HashMap<>();
+    private final Map<BiConsumer<S, A>, Priority> reversePriority = new HashMap<>();
 
     public void subscribe(BiConsumer<S, A> subscriber, Priority priority) {
         Set<BiConsumer<S, A>> set;
