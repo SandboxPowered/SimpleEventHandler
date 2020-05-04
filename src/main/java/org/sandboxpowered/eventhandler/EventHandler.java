@@ -5,6 +5,7 @@ import org.sandboxpowered.eventhandler.core.EventHandlerBase;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class EventHandler<S, A extends EventArgs> implements EventHandlerBase<S, A> {
@@ -30,5 +31,9 @@ public class EventHandler<S, A extends EventArgs> implements EventHandlerBase<S,
         for (BiConsumer<S, A> subscriber : subscribers) {
             subscriber.accept(sender, args);
         }
+    }
+
+    public CompletableFuture<Void> acceptAsync(S sender, A args) {
+        return CompletableFuture.runAsync(() -> accept(sender, args));
     }
 }
