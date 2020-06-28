@@ -6,4 +6,9 @@ import java.util.function.BiConsumer;
 
 public interface PriorityHandler<S, A extends Cancellable> extends EventHandlerBase<S, A> {
     void subscribe(BiConsumer<S, A> subscriber, Priority priority);
+
+    @Override
+    default void subscribe(BiConsumer<S, A> subscriber) {
+        subscribe(subscriber, Priority.NORMAL);
+    }
 }

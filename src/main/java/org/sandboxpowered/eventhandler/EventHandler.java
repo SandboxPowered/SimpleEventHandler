@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 
 public class EventHandler<S, A extends EventArgs> implements EventHandlerBase<S, A> {
     private final Set<BiConsumer<S, A>> subscribers = new HashSet<>();
-    private final AsyncHandler asyncHandle = new AsyncHandler();
 
     @Override
     public void subscribe(BiConsumer<S, A> subscriber) {
@@ -36,23 +35,9 @@ public class EventHandler<S, A extends EventArgs> implements EventHandlerBase<S,
     }
 
     public CompletableFuture<A> acceptAsync(S sender, A args) {
-        return CompletableFuture.supplyAsync(asyncHandle.setup(sender, args));
-    }
-
-    private class AsyncHandler implements Supplier<A> {
-        private S sender;
-        private A args;
-
-        @Override
-        public A get() {
+        return CompletableFuture.supplyAsync(() -> {
             accept(sender, args);
             return args;
-        }
-
-        Supplier<A> setup(S sender, A args) {
-            this.sender = sender;
-            this.args = args;
-            return this;
-        }
+        });
     }
 }

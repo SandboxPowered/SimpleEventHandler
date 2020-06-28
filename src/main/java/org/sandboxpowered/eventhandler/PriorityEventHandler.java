@@ -23,11 +23,6 @@ public class PriorityEventHandler<S, A extends Cancellable> implements PriorityH
     }
 
     @Override
-    public void subscribe(BiConsumer<S, A> subscriber) {
-        subscribe(subscriber, Priority.NORMAL);
-    }
-
-    @Override
     public void unsubscribe(BiConsumer<S, A> subscriber) {
         Priority priority = reversePriority.get(subscriber);
         Set<BiConsumer<S, A>> set = subscribers.get(priority);
