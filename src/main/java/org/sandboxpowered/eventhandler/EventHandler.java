@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 public class EventHandler<S, A extends EventArgs> implements EventHandlerBase<S, A> {
     private final Set<BiConsumer<S, A>> subscribers = new HashSet<>();

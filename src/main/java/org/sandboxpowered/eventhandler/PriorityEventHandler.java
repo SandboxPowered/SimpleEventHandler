@@ -4,7 +4,10 @@ import org.sandboxpowered.eventhandler.priority.Cancellable;
 import org.sandboxpowered.eventhandler.priority.Priority;
 import org.sandboxpowered.eventhandler.priority.PriorityHandler;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class PriorityEventHandler<S, A extends Cancellable> implements PriorityHandler<S, A> {
@@ -12,13 +15,7 @@ public class PriorityEventHandler<S, A extends Cancellable> implements PriorityH
     private final Map<BiConsumer<S, A>, Priority> reversePriority = new HashMap<>();
 
     public void subscribe(BiConsumer<S, A> subscriber, Priority priority) {
-        Set<BiConsumer<S, A>> set;
-        if (subscribers.containsKey(priority)) set = subscribers.get(priority);
-        else {
-            set = new HashSet<>();
-            subscribers.put(priority, set);
-        }
-        set.add(subscriber);
+        subscribers.computeIfAbsent(priority, k -> new HashSet<>()).add(subscriber);
         reversePriority.put(subscriber, priority);
     }
 
