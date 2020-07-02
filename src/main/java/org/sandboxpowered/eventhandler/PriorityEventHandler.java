@@ -40,8 +40,9 @@ public class PriorityEventHandler<S, A extends Cancellable> implements PriorityH
         for (int i = Priority.values().length - 1; i >= 0; --i) {
             if (canceled) break;
             Priority priority = Priority.values()[i];
-            if (subscribers.containsKey(priority)) {
-                for (BiConsumer<S, A> subscriber : subscribers.get(priority)) {
+            Set<BiConsumer<S, A>> set = subscribers.get(priority);
+            if (set != null) {
+                for (BiConsumer<S, A> subscriber : set) {
                     if (args.isCanceled()) {
                         canceled = true;
                         break;
