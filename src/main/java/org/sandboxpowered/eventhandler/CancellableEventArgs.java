@@ -14,8 +14,4 @@ public class CancellableEventArgs implements Cancellable {
     public boolean isCanceled() {
         return isCanceled;
     }
-
-    protected void reset() {
-        isCanceled = false;
-    }
 }
