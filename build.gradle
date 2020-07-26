@@ -8,7 +8,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = 'eventhandler'
 group 'org.sandboxpowered'
-version = "1.0.${System.getenv("TRAVIS_BUILD_NUMBER") ? (System.getenv("TRAVIS_BUILD_NUMBER")) : "0"}"
+version = "2.0.${System.getenv("TRAVIS_BUILD_NUMBER") ? (System.getenv("TRAVIS_BUILD_NUMBER")) : "0"}"
 
 publishing {
     publications {
