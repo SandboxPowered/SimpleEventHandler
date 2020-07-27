@@ -6,5 +6,7 @@ public enum Priority {
     NORMAL,
     HIGH,
     HIGHEST,
-    FINAL
+    FINAL;
+
+    public static final Priority[] VALUES = values();
 }

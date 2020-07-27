@@ -1,7 +1,22 @@
 package org.sandboxpowered.eventhandler;
 
-public interface CallbackInfoReturnable<V> extends CallbackInfo {
-    void setReturnValue(V value);
+public class CallbackInfoReturnable<V> extends CallbackInfo {
+    private V returnValue;
 
-    V getReturnValue();
+    public CallbackInfoReturnable(boolean cancellable) {
+        this(cancellable, null);
+    }
+
+    public CallbackInfoReturnable(boolean cancellable, V returnValue) {
+        super(cancellable);
+        this.returnValue = returnValue;
+    }
+
+    public void setReturnValue(V value) {
+        this.returnValue = value;
+    }
+
+    public V getReturnValue() {
+        return returnValue;
+    }
 }
