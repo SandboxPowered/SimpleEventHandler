@@ -50,7 +50,6 @@ publishing {
     publications {
         maven(MavenPublication) {
             artifact jar
-            artifact sourcesJar
         }
     }
 }
