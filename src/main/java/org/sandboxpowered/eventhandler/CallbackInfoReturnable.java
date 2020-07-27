@@ -12,11 +12,11 @@ public class CallbackInfoReturnable<V> extends CallbackInfo {
         this.returnValue = returnValue;
     }
 
-    public void setReturnValue(V value) {
-        this.returnValue = value;
-    }
-
     public V getReturnValue() {
         return returnValue;
+    }
+
+    public void setReturnValue(V value) {
+        this.returnValue = value;
     }
 }
