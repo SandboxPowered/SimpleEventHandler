@@ -1,14 +1,13 @@
 package org.sandboxpowered.eventhandler;
 
-public class CallbackInfoReturnable<V> extends CallbackInfo {
+public class Returnable<V> {
     private V returnValue;
 
-    public CallbackInfoReturnable(boolean cancellable) {
-        this(cancellable, null);
+    public Returnable() {
+        this(null);
     }
 
-    public CallbackInfoReturnable(boolean cancellable, V returnValue) {
-        super(cancellable);
+    public Returnable(V returnValue) {
         this.returnValue = returnValue;
     }
 

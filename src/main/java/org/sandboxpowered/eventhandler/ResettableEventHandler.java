@@ -1,7 +1,5 @@
 package org.sandboxpowered.eventhandler;
 
-import org.sandboxpowered.eventhandler.priority.Priority;
-
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;

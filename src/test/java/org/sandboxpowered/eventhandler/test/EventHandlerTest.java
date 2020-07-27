@@ -3,7 +3,7 @@ package org.sandboxpowered.eventhandler.test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.sandboxpowered.eventhandler.CallbackInfoReturnable;
+import org.sandboxpowered.eventhandler.Returnable;
 import org.sandboxpowered.eventhandler.ResettableEventHandler;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,8 +30,8 @@ public class EventHandlerTest {
     public void testCallbackInfo() {
         TEST.subscribe((string, test) -> test.setReturnValue(string.equals("test")));
 
-        CallbackInfoReturnable<Boolean> info = new CallbackInfoReturnable<>(false);
-        TEST.post(call -> call.onTest("test", info), info);
+        Returnable<Boolean> info = new Returnable<>(false);
+        TEST.post(call -> call.onTest("test", info));
         assertTrue(info.getReturnValue());
     }
 
@@ -39,8 +39,8 @@ public class EventHandlerTest {
     public void testCallbackInfoInverse() {
         TEST.subscribe((string, test) -> test.setReturnValue(string.equals("test")));
 
-        CallbackInfoReturnable<Boolean> info = new CallbackInfoReturnable<>(false);
-        TEST.post(call -> call.onTest("not test", info), info);
+        Returnable<Boolean> info = new Returnable<>(false);
+        TEST.post(call -> call.onTest("not test", info));
         assertFalse(info.getReturnValue());
     }
 
@@ -55,7 +55,7 @@ public class EventHandlerTest {
     }
 
     public interface OnTest {
-        void onTest(String string, CallbackInfoReturnable<Boolean> test);
+        void onTest(String string, Returnable<Boolean> test);
     }
 
     public interface OnReturn {
