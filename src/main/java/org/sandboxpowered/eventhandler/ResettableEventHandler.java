@@ -59,4 +59,9 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
         subscribers.clear();
         reversePriority.clear();
     }
+
+    @Override
+    public boolean hasSubscribers() {
+        return !subscribers.isEmpty();
+    }
 }

@@ -17,4 +17,6 @@ public interface EventHandler<T> {
     void subscribe(Priority priority, T eventCall);
 
     void unsubscribe(T eventCall);
+
+    boolean hasSubscribers();
 }
