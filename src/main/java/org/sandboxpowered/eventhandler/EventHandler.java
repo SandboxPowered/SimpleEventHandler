@@ -7,11 +7,15 @@ import java.util.function.Function;
 
 public interface EventHandler<T> {
 
-    <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator);
+    default <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator) {
+        return post(trFunction, rComparator, Cancellable.ALWAYS_FALSE);
+    }
 
     <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator, BooleanSupplier isCancelled);
 
-    void post(Consumer<T> tConsumer);
+    default void post(Consumer<T> tConsumer) {
+        post(tConsumer, Cancellable.ALWAYS_FALSE);
+    }
 
     void post(Consumer<T> tConsumer, BooleanSupplier isCancelled);
 

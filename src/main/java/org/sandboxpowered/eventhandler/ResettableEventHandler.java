@@ -10,15 +10,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ResettableEventHandler<T> implements EventHandler<T> {
-    private static final BooleanSupplier ALWAYS_TRUE = () -> true;
-    private static final BooleanSupplier ALWAYS_FALSE = () -> false;
     private final Map<Priority, Set<T>> subscribers = new HashMap<>();
     private final Map<T, Priority> reversePriority = new HashMap<>();
-
-    @Override
-    public <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator) {
-        return post(trFunction, rComparator, ALWAYS_FALSE);
-    }
 
     @Override
     public <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator, BooleanSupplier isCancelled) {
@@ -40,11 +33,6 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
             }
         }
         return value;
-    }
-
-    @Override
-    public void post(Consumer<T> tConsumer) {
-        post(tConsumer, ALWAYS_FALSE);
     }
 
     @Override
