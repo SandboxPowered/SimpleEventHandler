@@ -23,9 +23,9 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
     @Override
     public <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator, BooleanSupplier isCancelled) {
         R value = null;
-        boolean canceled = false;
+        boolean cancelled = false;
         for (int i = Priority.VALUES.length - 1; i >= 0; --i) {
-            if (canceled) break;
+            if (cancelled) break;
             Priority priority = Priority.VALUES[i];
             Set<T> set = subscribers.get(priority);
             if (set != null) {
@@ -33,7 +33,7 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
                     R rVal = trFunction.apply(subscriber);
                     value = value == null ? rVal : rComparator.apply(value, rVal);
                     if (isCancelled.getAsBoolean()) {
-                        canceled = true;
+                        cancelled = true;
                         break;
                     }
                 }
@@ -49,16 +49,16 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
 
     @Override
     public void post(Consumer<T> tConsumer, BooleanSupplier isCancelled) {
-        boolean canceled = false;
+        boolean cancelled = false;
         for (int i = Priority.VALUES.length - 1; i >= 0; --i) {
-            if (canceled) break;
+            if (cancelled) break;
             Priority priority = Priority.VALUES[i];
             Set<T> set = subscribers.get(priority);
             if (set != null) {
                 for (T subscriber : set) {
                     tConsumer.accept(subscriber);
                     if (isCancelled.getAsBoolean()) {
-                        canceled = true;
+                        cancelled = true;
                         break;
                     }
                 }
