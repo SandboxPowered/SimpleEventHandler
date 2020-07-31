@@ -7,15 +7,14 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class ResettableEventHandler<T> implements EventHandler<T> {
     private final Map<Priority, Set<T>> subscribers = new HashMap<>();
     private final Map<T, Priority> reversePriority = new HashMap<>();
 
     @Override
-    public <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator, BooleanSupplier isCancelled) {
-        R value = null;
+    public <R> R post(BiFunction<T, R, R> eventCaller, R originalValue, BooleanSupplier isCancelled) {
+        R value = originalValue;
         boolean cancelled = false;
         for (int i = Priority.VALUES.length - 1; i >= 0; --i) {
             if (cancelled) break;
@@ -23,8 +22,7 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
             Set<T> set = subscribers.get(priority);
             if (set != null) {
                 for (T subscriber : set) {
-                    R rVal = trFunction.apply(subscriber);
-                    value = value == null ? rVal : rComparator.apply(value, rVal);
+                    value = eventCaller.apply(subscriber, value);
                     if (isCancelled.getAsBoolean()) {
                         cancelled = true;
                         break;
