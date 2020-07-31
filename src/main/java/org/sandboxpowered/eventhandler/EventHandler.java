@@ -7,9 +7,9 @@ import java.util.function.Function;
 
 public interface EventHandler<T> {
 
-    <R> R post(Function<T,R> trFunction, BiFunction<R,R,R> rComparator);
+    <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator);
 
-    <R> R post(Function<T,R> trFunction, BiFunction<R,R,R> rComparator, BooleanSupplier isCancelled);
+    <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator, BooleanSupplier isCancelled);
 
     void post(Consumer<T> tConsumer);
 
