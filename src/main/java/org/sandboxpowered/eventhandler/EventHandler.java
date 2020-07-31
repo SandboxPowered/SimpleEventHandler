@@ -1,42 +1,31 @@
 package org.sandboxpowered.eventhandler;
 
-import org.sandboxpowered.eventhandler.core.EventArgs;
-import org.sandboxpowered.eventhandler.core.EventHandlerBase;
+import java.util.function.BiFunction;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.BiConsumer;
+public interface EventHandler<T> {
 
-public class EventHandler<S, A extends EventArgs> implements EventHandlerBase<S, A> {
-    private final Set<BiConsumer<S, A>> subscribers = new HashSet<>();
-
-    @Override
-    public void subscribe(BiConsumer<S, A> subscriber) {
-        subscribers.add(subscriber);
+    default <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator) {
+        return post(trFunction, rComparator, Cancellable.ALWAYS_FALSE);
     }
 
-    @Override
-    public void unsubscribe(BiConsumer<S, A> subscriber) {
-        subscribers.remove(subscriber);
+    <R> R post(Function<T, R> trFunction, BiFunction<R, R, R> rComparator, BooleanSupplier isCancelled);
+
+    default void post(Consumer<T> tConsumer) {
+        post(tConsumer, Cancellable.ALWAYS_FALSE);
     }
 
-    @Override
-    public void clear() {
-        subscribers.clear();
+    void post(Consumer<T> tConsumer, BooleanSupplier isCancelled);
+
+    default void subscribe(T eventCall) {
+        subscribe(Priority.NORMAL, eventCall);
     }
 
-    @Override
-    public void accept(S sender, A args) {
-        for (BiConsumer<S, A> subscriber : subscribers) {
-            subscriber.accept(sender, args);
-        }
-    }
+    void subscribe(Priority priority, T eventCall);
 
-    public CompletableFuture<A> acceptAsync(S sender, A args) {
-        return CompletableFuture.supplyAsync(() -> {
-            accept(sender, args);
-            return args;
-        });
-    }
+    void unsubscribe(T eventCall);
+
+    boolean hasSubscribers();
 }

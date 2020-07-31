@@ -1,4 +1,5 @@
 plugins {
+    id "com.jfrog.bintray" version "1.8.4"
     id 'java-library'
     id 'maven-publish'
 }
@@ -8,25 +9,53 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = 'eventhandler'
 group 'org.sandboxpowered'
-version = "1.0.${System.getenv("TRAVIS_BUILD_NUMBER") ? (System.getenv("TRAVIS_BUILD_NUMBER")) : "0"}"
+def ENV = System.getenv()
+def buildNumber = ENV.BUILD_NUMBER
+def release = "2.0"
+version = "$release.${buildNumber ?: "0"}"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.guava:guava:21.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bintray {
+    user = System.getenv("BINTRAY_USER")
+    key = System.getenv("BINTRAY_KEY")
+    publications = ['maven']
+    publish = true
+
+    pkg {
+        repo = 'Library'
+        name = 'eventhandler'
+        userOrg = 'sandboxpowered'
+        licenses = ['LGPL-3.0']
+        vcsUrl = 'https://github.com/sandboxpowered/simpleeventhandler.git'
+        publicDownloadNumbers = true
+        githubRepo = 'sandboxpowered/simpleeventhandler'
+        githubReleaseNotesFile = 'README.md'
+        version {
+            name = project.version
+            desc = ''
+            vcsTag = project.version
+            released  = new Date()
+        }
+    }
+}
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            artifactId = 'eventhandler'
+        maven(MavenPublication) {
             artifact jar
-        }
-    }
-    repositories {
-        if (System.getenv("mvn_username")) {
-            maven {
-                name = "Maven"
-                url = uri("sftp://maven.sandboxpowered.org:22/sbxmvn/")
-                credentials {
-                    username = System.getenv("mvn_username")
-                    password = System.getenv("mvn_password")
-                }
-            }
         }
     }
 }
