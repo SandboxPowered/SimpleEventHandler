@@ -13,7 +13,7 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
     private final Map<T, Priority> reversePriority = new HashMap<>();
 
     @Override
-    public <R> R post(BiFunction<T, R, R> eventCaller, R originalValue, BooleanSupplier isCancelled) {
+    public <R> R returnable(BiFunction<T, R, R> eventCaller, R originalValue, BooleanSupplier isCancelled) {
         R value = originalValue;
         boolean cancelled = false;
         for (int i = Priority.VALUES.length - 1; i >= 0; --i) {
@@ -31,6 +31,25 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
             }
         }
         return value;
+    }
+
+    @Override
+    public boolean cancellable(BooleanFunction<T> eventCaller) {
+        boolean cancelled = false;
+        for (int i = Priority.VALUES.length - 1; i >= 0; --i) {
+            if (cancelled) break;
+            Priority priority = Priority.VALUES[i];
+            Set<T> set = subscribers.get(priority);
+            if (set != null) {
+                for (T subscriber : set) {
+                    if (eventCaller.apply(subscriber)) {
+                        cancelled = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return cancelled;
     }
 
     @Override
