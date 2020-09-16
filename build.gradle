@@ -11,7 +11,7 @@ archivesBaseName = 'eventhandler'
 group 'org.sandboxpowered'
 def ENV = System.getenv()
 def buildNumber = ENV.BUILD_NUMBER
-def release = "2.0"
+def release = "2.1"
 version = "$release.${buildNumber ?: "0"}"
 
 repositories {
