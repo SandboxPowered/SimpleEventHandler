@@ -3,21 +3,22 @@ package org.sandboxpowered.eventhandler;
 import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public interface EventHandler<T> {
     BooleanSupplier ALWAYS_FALSE = () -> false;
 
-    default <R> R returnable(BiFunction<T, R, R> eventCaller) {
-        return returnable(eventCaller, null, ALWAYS_FALSE);
+    default <R> R postReturnable(BiFunction<T, R, R> eventCaller) {
+        return postReturnable(eventCaller, null, ALWAYS_FALSE);
     }
 
-    default <R> R returnable(BiFunction<T, R, R> eventCaller, R originalValue) {
-        return returnable(eventCaller, originalValue, ALWAYS_FALSE);
+    default <R> R postReturnable(BiFunction<T, R, R> eventCaller, R originalValue) {
+        return postReturnable(eventCaller, originalValue, ALWAYS_FALSE);
     }
 
-    <R> R returnable(BiFunction<T, R, R> eventCaller, R originalValue, BooleanSupplier isCancelled);
+    <R> R postReturnable(BiFunction<T, R, R> eventCaller, R originalValue, BooleanSupplier isCancelled);
 
-    boolean cancellable(BooleanFunction<T> eventCaller);
+    boolean postCancellable(Predicate<T> eventCaller);
 
     default void post(Consumer<T> tConsumer) {
         post(tConsumer, ALWAYS_FALSE);

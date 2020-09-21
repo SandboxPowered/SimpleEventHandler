@@ -7,13 +7,14 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class ResettableEventHandler<T> implements EventHandler<T> {
     private final Map<Priority, Set<T>> subscribers = new HashMap<>();
     private final Map<T, Priority> reversePriority = new HashMap<>();
 
     @Override
-    public <R> R returnable(BiFunction<T, R, R> eventCaller, R originalValue, BooleanSupplier isCancelled) {
+    public <R> R postReturnable(BiFunction<T, R, R> eventCaller, R originalValue, BooleanSupplier isCancelled) {
         R value = originalValue;
         boolean cancelled = false;
         for (int i = Priority.VALUES.length - 1; i >= 0; --i) {
@@ -34,7 +35,7 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
     }
 
     @Override
-    public boolean cancellable(BooleanFunction<T> eventCaller) {
+    public boolean postCancellable(Predicate<T> eventCaller) {
         boolean cancelled = false;
         for (int i = Priority.VALUES.length - 1; i >= 0; --i) {
             if (cancelled) break;
@@ -42,7 +43,7 @@ public class ResettableEventHandler<T> implements EventHandler<T> {
             Set<T> set = subscribers.get(priority);
             if (set != null) {
                 for (T subscriber : set) {
-                    if (eventCaller.apply(subscriber)) {
+                    if (eventCaller.test(subscriber)) {
                         cancelled = true;
                         break;
                     }

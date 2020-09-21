@@ -25,7 +25,7 @@ public class EventHandlerTest {
     public void testCancellable() {
         TEST.subscribe((string) -> string.equals("test"));
 
-        assertTrue(TEST.cancellable(call -> call.onTest("test")));
+        assertTrue(TEST.postCancellable(call -> call.onTest("test")));
     }
 
     public interface OnTest {
