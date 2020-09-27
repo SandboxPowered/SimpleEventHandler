@@ -1,7 +1,7 @@
 plugins {
-    id "com.jfrog.bintray" version "1.8.4"
     id 'java-library'
     id 'maven-publish'
+    id 'me.qoomon.git-versioning' version '3.0.0'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -10,12 +10,36 @@ targetCompatibility = JavaVersion.VERSION_1_8
 archivesBaseName = 'eventhandler'
 group 'org.sandboxpowered'
 def ENV = System.getenv()
-def buildNumber = ENV.BUILD_NUMBER
-def release = "2.1"
-version = "$release.${buildNumber ?: "0"}"
+def releasesRepoUrl = "https://nexus.sandboxpowered.org/repository/maven-releases/"
+def snapshotsRepoUrl = "https://nexus.sandboxpowered.org/repository/maven-snapshots/"
 
+def release = "2.1.0"
+
+version = "${release}-SNAPSHOT"
+
+gitVersioning.apply {
+    branch {
+        pattern = 'develop'
+        versionFormat = '${version}'
+    }
+    branch {
+        pattern = 'release'
+        versionFormat = '${version.release}'
+    }
+    branch {
+        pattern = 'feature/(?<feature>.+)'
+        versionFormat = '${feature}-SNAPSHOT'
+    }
+    tag {
+        pattern = 'release/(?<tagVersion>[0-9].*)'
+        versionFormat = '${tagVersion}'
+    }
+    commit {
+        versionFormat = '${commit.short}'
+    }
+}
 repositories {
-    mavenCentral()
+    maven { url 'https://nexus.sandboxpowered.org/repository/maven-public/' }
 }
 
 dependencies {
@@ -28,34 +52,20 @@ test {
     useJUnitPlatform()
 }
 
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_KEY")
-    publications = ['maven']
-    publish = true
-
-    pkg {
-        repo = 'Library'
-        name = 'eventhandler'
-        userOrg = 'sandboxpowered'
-        licenses = ['LGPL-3.0']
-        vcsUrl = 'https://github.com/sandboxpowered/simpleeventhandler.git'
-        publicDownloadNumbers = true
-        githubRepo = 'sandboxpowered/simpleeventhandler'
-        githubReleaseNotesFile = 'README.md'
-        version {
-            name = project.version
-            desc = ''
-            vcsTag = project.version
-            released  = new Date()
-        }
-    }
-}
-
 publishing {
     publications {
         maven(MavenPublication) {
             artifact jar
+        }
+    }
+
+    repositories {
+        maven {
+            url = rootProject.version.endsWith("-SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username ENV.MAVEN_USER
+                password ENV.MAVEN_PASS
+            }
         }
     }
 }
